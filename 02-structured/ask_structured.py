@@ -12,11 +12,12 @@ class Answer(BaseModel):
     answer: str
     answerable: bool
     citations: list[str] = Field(default_factory=list)
+    evidence: str = ""
 
     @model_validator(mode="after")
     def citations_required(self):
-        if self.answerable and not self.citations:
-            raise ValueError("answerable=true requires at least one citation")
+        if self.answerable and (not self.citations or not self.evidence.strip()):
+            raise ValueError("answerable=true requires citations and evidence")
         return self
 
 NO_ANSWER = Answer(answer="I don't know based on the documents.", answerable=False, citations=[])
@@ -42,8 +43,9 @@ Return JSON with:
 - answer: your answer (short)
 - answerable: true if the context contains the answer, otherwise false
 - citations: list of source file names (like "git_basics.txt") that support the answer
+- evidence: ONE sentence copied exactly from the context that directly answers the question (empty string if none)
 
-If the answer is not in the context, set answerable to false and answer "I do not know based on the documents."
+If no sentence in the context directly answers the question (related topics are NOT enough), set answerable to false and answer "I do not know based on the documents."
 
 Context:
 {context}
@@ -63,6 +65,8 @@ Question: {question}"""
             continue                           # retry
         if not set(result.citations) <= allowed:
             continue                           # hallucinated citation -> retry
+        if result.answerable and " ".join(result.evidence.lower().split()) not in " ".join(context.lower().split()):
+            continue                           # evidence is not a real quote -> retry
         return result
     return NO_ANSWER
 

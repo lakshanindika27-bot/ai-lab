@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 import chromadb
 import ollama
@@ -7,11 +8,11 @@ CHUNK_SIZE = 500      # characters
 OVERLAP = 100
 
 def chunk_text(text: str) -> list[str]:
-    chunks, start = [], 0
-    while start < len(text):
-        chunks.append(text[start:start + CHUNK_SIZE])
-        start += CHUNK_SIZE - OVERLAP
-    return chunks
+    """Sentence windows: 2 sentences per chunk, sliding by 1."""
+    sents = [x.strip() for x in re.split(r"(?<=[.!?])\s+", text.strip()) if x.strip()]
+    if len(sents) <= 2:
+        return [" ".join(sents)]
+    return [" ".join(sents[i:i + 2]) for i in range(len(sents) - 1)]
 
 def main():
     client = chromadb.PersistentClient(path="chroma_db")
