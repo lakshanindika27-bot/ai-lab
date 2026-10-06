@@ -1,0 +1,1 @@
+Docker packages an application and its dependencies into an image. A container is a running instance of an image. Use docker build to create an image and docker run to start a container. A Dockerfile lists the steps to build the image.

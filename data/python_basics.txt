@@ -1,0 +1,1 @@
+A Python virtual environment isolates project dependencies. Create one with python3 -m venv .venv and activate it with source .venv/bin/activate. Packages installed with pip then stay inside that environment and do not affect other projects.
