@@ -1,0 +1,17 @@
+[
+  {"q": "How do I create a Python virtual environment?", "answerable": true,  "source": "python_basics.txt"},
+  {"q": "How do I activate a venv?",                      "answerable": true,  "source": "python_basics.txt"},
+  {"q": "What is a Docker container?",                    "answerable": true,  "source": "docker_basics.txt"},
+  {"q": "Which command builds a Docker image?",           "answerable": true,  "source": "docker_basics.txt"},
+  {"q": "How do I save a snapshot in git?",               "answerable": true,  "source": "git_basics.txt"},
+  {"q": "How do I see the commit history?",               "answerable": true,  "source": "git_basics.txt"},
+  {"q": "How do I change file permissions in Linux?",     "answerable": true,  "source": "linux_basics.txt"},
+  {"q": "Which command searches text inside files?",      "answerable": true,  "source": "linux_basics.txt"},
+  {"q": "How do I start a FastAPI server?",               "answerable": true,  "source": "fastapi_basics.txt"},
+  {"q": "What validates data in FastAPI?",                "answerable": true,  "source": "fastapi_basics.txt"},
+  {"q": "What is the capital of France?",                 "answerable": false, "source": null},
+  {"q": "How do I train a neural network in PyTorch?",    "answerable": false, "source": null},
+  {"q": "What is Kubernetes?",                            "answerable": false, "source": null},
+  {"q": "Who won the 2018 World Cup?",                    "answerable": false, "source": null},
+  {"q": "How do I deploy to AWS?",                        "answerable": false, "source": null}
+]
