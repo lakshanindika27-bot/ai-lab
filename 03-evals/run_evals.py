@@ -35,8 +35,9 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser()
     p.add_argument("--max-distance", type=float, default=0.9)
     p.add_argument("--k", type=int, default=3)
+    p.add_argument("--eval-file", default="03-evals/eval_set.json")
     a = p.parse_args()
     A.MAX_DISTANCE = a.max_distance
-    items = json.load(open("03-evals/eval_set.json"))
+    items = json.load(open(a.eval_file))
     print(f"MAX_DISTANCE={a.max_distance}  k={a.k}\n")
     report(evaluate(items, a.k))
