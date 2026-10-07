@@ -1,3 +1,4 @@
+import sys
 import argparse
 import chromadb
 import ollama
@@ -53,9 +54,12 @@ Reply as JSON: {{"supported": true or false}}"""
         options={"temperature": 0},
     )
     try:
-        return Verdict.model_validate_json(resp["message"]["content"]).supported
+        v = Verdict.model_validate_json(resp["message"]["content"]).supported
     except ValidationError:
-        return False
+        v = False
+    if os.getenv("DEBUG"):
+        print(f"[verify] supported={v}\n  EVIDENCE: {evidence}\n  ANSWER: {answer}", file=sys.stderr)
+    return v
 
 def ask(question: str, k: int = 3) -> Answer:
     chunks = [c for c in retrieve(question, k) if c["distance"] <= MAX_DISTANCE]
