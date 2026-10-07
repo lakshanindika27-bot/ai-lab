@@ -1,0 +1,1 @@
+Git tracks changes to files. Use git init to create a repository, git add to stage files, and git commit -m "message" to save a snapshot. git status shows what changed, and git log shows the commit history. A branch lets you work on a feature separately from the main branch.

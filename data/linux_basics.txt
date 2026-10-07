@@ -1,0 +1,1 @@
+In Linux, ls lists files, cd changes the directory, and mkdir creates a folder. chmod changes file permissions. sudo runs a command with administrator rights. The grep command searches for text inside files.

@@ -1,0 +1,17 @@
+MAX_DISTANCE=0.95  k=3
+
+PASS 6.7s  How can I keep my project's libraries separate from other projects?
+PASS 8.8s  Which tool shows me which files I changed?
+FAIL 25.3s  What is the difference between an image and a container?
+PASS 7.9s  How do I make a new folder?
+PASS 23.9s  How do I delete a git branch?
+PASS 29.1s  How do I install Docker on Ubuntu?
+PASS 24.1s  How do I add authentication to a FastAPI app?
+PASS 21.1s  How do I uninstall a package with pip?
+PASS 25.6s  How do I run a Docker container on port 8080?
+PASS 25.3s  How do I undo my last git commit?
+
+Answerable answered : 3/4
+Correct citation    : 3/4
+Correct abstention  : 6/6
+Total time          : 197.7s

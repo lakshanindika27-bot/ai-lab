@@ -1,0 +1,22 @@
+MAX_DISTANCE=0.95  k=3
+
+PASS 13.8s  How do I create a Python virtual environment?
+PASS 10.2s  How do I activate a venv?
+PASS 6.5s  What is a Docker container?
+PASS 7.9s  Which command builds a Docker image?
+PASS 11.4s  How do I save a snapshot in git?
+PASS 8.6s  How do I see the commit history?
+PASS 7.4s  How do I change file permissions in Linux?
+PASS 7.1s  Which command searches text inside files?
+FAIL 25.7s  How do I start a FastAPI server?
+PASS 6.9s  What validates data in FastAPI?
+PASS 0.1s  What is the capital of France?
+PASS 0.1s  How do I train a neural network in PyTorch?
+PASS 0.1s  What is Kubernetes?
+PASS 0.1s  Who won the 2018 World Cup?
+PASS 0.1s  How do I deploy to AWS?
+
+Answerable answered : 9/10
+Correct citation    : 9/10
+Correct abstention  : 5/5
+Total time          : 105.9s

@@ -9,7 +9,7 @@ LLM_MODEL = "llama3.2:3b"
 MAX_DISTANCE = 0.9      # provisional; tune with evals in 03
 MAX_RETRIES = 2
 import os
-VERIFY = os.getenv("VERIFY", "1") == "1"
+VERIFY = os.getenv("VERIFY", "0") == "1"
 VERIFIER_MODEL = os.getenv("VERIFIER_MODEL", "")
 
 class Answer(BaseModel):
@@ -61,6 +61,18 @@ Reply as JSON: {{"supported": true or false}}"""
         print(f"[verify] supported={v}\n  EVIDENCE: {evidence}\n  ANSWER: {answer}", file=sys.stderr)
     return v
 
+import re as _re
+GROUNDED = os.getenv("GROUNDED", "1") == "1"
+STOP = {"the", "a", "an", "to", "use", "with", "and", "or", "of", "in", "on", "run", "is", "it", "you", "can", "for"}
+
+def grounded(answer: str, evidence: str, thr: float = 0.7) -> bool:
+    """Cheap check: most answer tokens must appear in the evidence quote."""
+    toks = [t for t in _re.findall(r"[\w\-\.:<>=/]+", answer.lower()) if t not in STOP]
+    if not toks:
+        return False
+    ev = evidence.lower()
+    return sum(t in ev for t in toks) / len(toks) >= thr
+
 def ask(question: str, k: int = 3) -> Answer:
     chunks = [c for c in retrieve(question, k) if c["distance"] <= MAX_DISTANCE]
     if not chunks:
@@ -99,6 +111,8 @@ Question: {question}"""
             continue                           # evidence is not a real quote -> retry
         if not result.answerable:
             return NO_ANSWER
+        if GROUNDED and not grounded(result.answer, result.evidence):
+            continue                           # answer not found in the quote -> retry
         if VERIFY and not supports(question, result.evidence, result.answer):
             continue                           # quote does not state the answer -> retry
         return result

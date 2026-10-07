@@ -1,0 +1,1 @@
+FastAPI is a Python web framework for building APIs. Define a route with a decorator such as @app.get("/health"). Run the server with uvicorn main:app --reload. FastAPI uses Pydantic models to validate request and response data.
