@@ -7,6 +7,9 @@ EMBED_MODEL = "nomic-embed-text"
 LLM_MODEL = "llama3.2:3b"
 MAX_DISTANCE = 0.9      # provisional; tune with evals in 03
 MAX_RETRIES = 2
+import os
+VERIFY = os.getenv("VERIFY", "1") == "1"
+VERIFIER_MODEL = os.getenv("VERIFIER_MODEL", "")
 
 class Answer(BaseModel):
     answer: str
@@ -30,6 +33,29 @@ def retrieve(question: str, k: int) -> list[dict]:
         {"source": m["source"], "text": d, "distance": dist}
         for d, m, dist in zip(hits["documents"][0], hits["metadatas"][0], hits["distances"][0])
     ]
+
+class Verdict(BaseModel):
+    supported: bool
+
+def supports(question: str, evidence: str, answer: str) -> bool:
+    """Second LLM call: does the quoted sentence itself state the answer?"""
+    prompt = f"""Question: {question}
+Sentence from the documents: {evidence}
+Proposed answer: {answer}
+
+Does the sentence above itself state the information given in the proposed answer?
+Background or related information is NOT enough.
+Reply as JSON: {{"supported": true or false}}"""
+    resp = ollama.chat(
+        model=VERIFIER_MODEL or LLM_MODEL,
+        messages=[{"role": "user", "content": prompt}],
+        format=Verdict.model_json_schema(),
+        options={"temperature": 0},
+    )
+    try:
+        return Verdict.model_validate_json(resp["message"]["content"]).supported
+    except ValidationError:
+        return False
 
 def ask(question: str, k: int = 3) -> Answer:
     chunks = [c for c in retrieve(question, k) if c["distance"] <= MAX_DISTANCE]
@@ -67,6 +93,10 @@ Question: {question}"""
             continue                           # hallucinated citation -> retry
         if result.answerable and " ".join(result.evidence.lower().split()) not in " ".join(context.lower().split()):
             continue                           # evidence is not a real quote -> retry
+        if not result.answerable:
+            return NO_ANSWER
+        if VERIFY and not supports(question, result.evidence, result.answer):
+            continue                           # quote does not state the answer -> retry
         return result
     return NO_ANSWER
 
