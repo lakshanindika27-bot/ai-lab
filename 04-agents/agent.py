@@ -10,7 +10,19 @@ MAX_DISTANCE = 0.95
 GATE = os.getenv("GATE", "0") == "1"
 FORCE = os.getenv("FORCE", "0") == "1"
 
+TOOL = os.getenv("TOOL", "raw")
+if TOOL == "pipeline":
+    A.GROUNDED, A.VERIFY = True, False
+
+def search_docs_pipeline(query: str) -> str:
+    r = A.ask(query, 3)
+    if not r.answerable:
+        return "NO RELEVANT PASSAGES FOUND. The documents do not cover this."
+    return f"ANSWER: {r.answer}\nSOURCE: {', '.join(r.citations)}\nEVIDENCE: {r.evidence}"
+
 def search_docs(query: str) -> str:
+    if TOOL == "pipeline":
+        return search_docs_pipeline(query)
     chunks = A.retrieve(query, 3)
     if GATE:
         chunks = [c for c in chunks if c["distance"] <= MAX_DISTANCE]

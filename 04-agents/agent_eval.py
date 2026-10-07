@@ -8,7 +8,7 @@ def main():
     items = []
     for f in ["03-evals/eval_set.json", "03-evals/eval_set_hard.json"]:
         items += json.load(open(f))
-    ans_ok = ans_total = ab_ok = ab_total = steps = 0
+    ans_ok = ans_total = ab_ok = ab_total = steps = ab_nosearch = 0
     t0 = time.time()
     for it in items:
         r = agent.run(it["q"], verbose=False)
@@ -23,11 +23,13 @@ def main():
             ab_total += 1
             ok = ab
             ab_ok += ok
+            ab_nosearch += (ok and not searched)
         print(("PASS " if ok else "FAIL ") + ("" if searched else "[no-search] ") + it["q"])
     print()
     print(f"GATE={agent.GATE} FORCE={agent.FORCE}")
     print(f"Answerable answered after searching : {ans_ok}/{ans_total}")
     print(f"Correct abstention                  : {ab_ok}/{ab_total}")
+    print(f"  of which without searching       : {ab_nosearch}")
     print(f"Avg steps                           : {steps / len(items):.1f}")
     print(f"Total time                          : {time.time() - t0:.1f}s")
 
