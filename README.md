@@ -27,8 +27,10 @@ A small RAG system built and evaluated locally (Ollama: `llama3.2:3b`, `nomic-em
 - The grounded check is lexical: a correct paraphrased answer can be rejected (1 miss on each set).
 - Tiny corpus (5 short documents); retrieval behavior on larger corpora is untested.
 
-## Limitations
-- Only 25 questions, written by me; design choices and thresholds were tuned on the same questions (no held-out set), so the numbers are optimistic.
-- The grounded check is lexical: a correct paraphrased answer can be rejected (1 miss on each set).
-- Tiny corpus (5 short documents); retrieval behavior on larger corpora is untested.
+## Run
 
+    ollama pull llama3.2:3b && ollama pull nomic-embed-text
+    python 01-rag/ingest.py
+    python 02-structured/ask_structured.py "How do I start a FastAPI server?"
+    python 03-evals/run_evals.py --max-distance 0.95
+    python 03-evals/run_evals.py --eval-file 03-evals/eval_set_hard.json --max-distance 0.95
