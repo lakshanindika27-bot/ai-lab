@@ -34,3 +34,27 @@ A small RAG system built and evaluated locally (Ollama: `llama3.2:3b`, `nomic-em
     python 02-structured/ask_structured.py "How do I start a FastAPI server?"
     python 03-evals/run_evals.py --max-distance 0.95
     python 03-evals/run_evals.py --eval-file 03-evals/eval_set_hard.json --max-distance 0.95
+
+## Agent experiment (04-agents)
+
+A tool-calling agent (llama3.2:3b) with `search_docs` and `list_sources` tools, evaluated on the same 25 questions. Answerable = "searched and did not abstain" (looser than the pipeline metric, which also checks the citation); abstention is detected by string match.
+
+| Configuration | Answerable answered | Abstention | Abstained without searching | Avg steps | Time |
+|---|---|---|---|---|---|
+| Baseline | 7/14 | 5/11 | n/a | 1.7 | 554s |
+| Distance gate in tool | 8/14 | 6/11 | n/a | 1.7 | 535s |
+| Gate + forced search | 10/14 | 3/11 | n/a | 2.3 | 685s |
+| Tool = full RAG pipeline | 3/14 | 8/11 | 5 | 1.6 | 627s |
+| Tool = pipeline + forced search | 7/14 | 5/11 | 2 | 2.4 | 978s |
+| (reference) pipeline without agent | 12/14 | 11/11 | n/a | n/a | about 300s |
+
+### Agent findings
+- For this 3b model the fixed pipeline beat every agent configuration on recall, abstention and time. The agent's value is multi-step questions (for example comparing git and docker), which this eval set barely covers.
+- The agent often skipped the search tool and answered or abstained directly. Forcing a search raised recall but lowered abstention in both tool variants.
+- A high abstention score can be misleading: with the pipeline tool, 5 of the 8 correct abstentions happened without any search, and the same behaviour shows up as missed answerable questions.
+- Without the gate, the agent answered near-miss questions from its own knowledge (for example pip uninstall) even after searching.
+
+### Agent limitations
+- Only the 3b model was tested; a larger model may behave differently.
+- Pipeline and agent numbers use different metrics and are not strictly comparable.
+- Abstention detection is a string match; the guardrails in the pipeline tool were tuned on these same questions.
