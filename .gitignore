@@ -3,3 +3,4 @@
 __pycache__/
 *.pyc
 chroma_db/
+05-cost-cache/cache.json

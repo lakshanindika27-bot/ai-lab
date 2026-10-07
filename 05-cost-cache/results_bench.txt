@@ -1,0 +1,3 @@
+cold (empty cache)       168.8s  chat= 12 embed= 10 prompt_tok=  2694 out_tok=  649 hits=0 misses=10
+warm (same questions)     24.4s  chat=  3 embed=  1 prompt_tok=   645 out_tok=  177 hits=9 misses=1
+case/punctuation only     23.3s  chat=  3 embed=  1 prompt_tok=   645 out_tok=  177 hits=9 misses=1

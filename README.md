@@ -58,3 +58,22 @@ A tool-calling agent (llama3.2:3b) with `search_docs` and `list_sources` tools, 
 - Only the 3b model was tested; a larger model may behave differently.
 - Pipeline and agent numbers use different metrics and are not strictly comparable.
 - Abstention detection is a string match; the guardrails in the pipeline tool were tuned on these same questions.
+
+## Cost and caching (05-cost-cache)
+
+Ollama runs locally, so tokens and seconds stand in for cost. `meter.py` wraps the Ollama calls (token counts, latency, retries with exponential backoff, timeout); `cached_ask.py` caches answerable results keyed by the normalized question plus model, thresholds and a hash of the data files (editing a document invalidates the cache). Benchmark on the first 10 easy-set questions:
+
+| Pass | Time | Chat calls | Embed calls | Prompt tokens | Output tokens | Cache hits |
+|---|---|---|---|---|---|---|
+| Cold (empty cache) | 168.8s | 12 | 10 | 2694 | 649 | 0/10 |
+| Warm (same questions) | 24.4s | 3 | 1 | 645 | 177 | 9/10 |
+| Case/punctuation changes | 23.3s | 3 | 1 | 645 | 177 | 9/10 |
+
+### Caching findings
+- A cache hit costs no LLM call, no embedding call and no tokens. Warm passes cut chat calls from 12 to 3.
+- The remaining warm cost is one question that ends in abstention after 3 attempts (inferred from the call counts). Abstentions are not cached, so that triple cost repeats on every request. Caching abstentions that follow retry exhaustion would remove it, but this was not tested.
+- Normalization (lowercase, punctuation stripped) makes trivial variants hit. The cache is exact-match, so real paraphrases are expected to miss (not tested).
+
+### Caching limitations
+- Only 10 questions; timings are noisy and the cold pass includes model load.
+- Hosted-API prompt caching was not tested (local models only).
