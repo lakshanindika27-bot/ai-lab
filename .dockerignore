@@ -1,0 +1,7 @@
+.venv
+.git
+chroma_db
+__pycache__
+*.pyc
+.env
+05-cost-cache/cache.json

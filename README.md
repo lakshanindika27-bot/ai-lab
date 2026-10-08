@@ -80,3 +80,30 @@ Ollama runs locally, so tokens and seconds stand in for cost. `meter.py` wraps t
 
 ### Retry check
 Pointing the client at an unreachable port fails after 3.0 seconds with a ConnectionError, consistent with 3 attempts and exponential backoff (1s, then 2s). Timeouts on a hung server were not tested.
+
+## Serving (06-serve)
+
+A FastAPI app (`06-serve/server.py`) exposes `GET /health` and `POST /ask` (validated input, structured JSON reply with `answerable`, `citations`, `evidence`, `cached`, `seconds`; HTTP 503 on backend errors). It is packaged as a Docker image (`Dockerfile`, minimal `requirements-serve.txt`). The container reaches Ollama on the host with `--network host` (Docker Engine inside WSL Ubuntu); documents and the vector store are mounted as volumes, so the image contains no data.
+
+Smoke test, local server and container:
+
+| Request | Result |
+|---|---|
+| `GET /health` | status ok, model and threshold reported |
+| Question answered from the docs (container) | `answerable: true`, `cached: false`, 68.6s (first request, likely includes model load) |
+| Same question again | `cached: true`, 0.0s |
+| Off-topic question (local server) | `answerable: false` in 0.2s (distance gate, no LLM call) |
+| Question shorter than 3 characters | HTTP 422 validation error |
+
+### Serving limitations
+- A known miss reproduces through the API: "How do I start a FastAPI server?" abstains (the lexical check rejects the answer) and costs 138s then 32s per request, because retries run and abstentions are not cached. There is no per-request time budget.
+- The cache lives inside the container and is lost when it stops; one worker, a synchronous endpoint, no authentication, no rate limiting.
+- Only a smoke test was run (no load test); the image was not run in CI.
+
+Run it:
+
+    docker build -t ai-lab-rag .
+    docker run -d --rm --network host -v "$PWD/data:/app/data" -v "$PWD/chroma_db:/app/chroma_db" ai-lab-rag
+    curl -s -X POST localhost:8000/ask -H 'Content-Type: application/json' -d '{"question":"How do I create a Python virtual environment?"}'
+
+(Run `python 01-rag/ingest.py` first so `chroma_db` exists.)

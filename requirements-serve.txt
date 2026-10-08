@@ -1,0 +1,6 @@
+chromadb==1.5.9
+fastapi==0.142.2
+ollama==0.6.3
+pydantic==2.13.5
+tenacity==9.1.4
+uvicorn==0.54.0
