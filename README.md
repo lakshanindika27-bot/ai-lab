@@ -77,3 +77,6 @@ Ollama runs locally, so tokens and seconds stand in for cost. `meter.py` wraps t
 ### Caching limitations
 - Only 10 questions; timings are noisy and the cold pass includes model load.
 - Hosted-API prompt caching was not tested (local models only).
+
+### Retry check
+Pointing the client at an unreachable port fails after 3.0 seconds with a ConnectionError, consistent with 3 attempts and exponential backoff (1s, then 2s). Timeouts on a hung server were not tested.
