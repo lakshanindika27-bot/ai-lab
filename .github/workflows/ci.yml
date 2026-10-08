@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  docker-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build --build-arg PY=3.14 -t ai-lab-rag .
+
+      - name: Start container
+        run: docker run -d --name ai-lab-rag -p 8000:8000 ai-lab-rag
+
+      - name: Wait for /health
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sf localhost:8000/health; then echo; exit 0; fi
+            sleep 2
+          done
+          exit 1
+
+      - name: Check input validation
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" -X POST localhost:8000/ask -H 'Content-Type: application/json' -d '{"question":"x"}')
+          echo "HTTP $code"
+          test "$code" = "422"
+
+      - name: Container logs on failure
+        if: failure()
+        run: docker logs ai-lab-rag
