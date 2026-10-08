@@ -29,6 +29,8 @@ A small RAG system built and evaluated locally (Ollama: `llama3.2:3b`, `nomic-em
 
 ## Run
 
+    python3 -m venv .venv && source .venv/bin/activate
+    pip install -r requirements.txt
     ollama pull llama3.2:3b && ollama pull nomic-embed-text
     python 01-rag/ingest.py
     python 02-structured/ask_structured.py "How do I start a FastAPI server?"
