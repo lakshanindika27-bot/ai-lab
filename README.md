@@ -109,3 +109,21 @@ Run it:
     curl -s -X POST localhost:8000/ask -H 'Content-Type: application/json' -d '{"question":"How do I create a Python virtual environment?"}'
 
 (Run `python 01-rag/ingest.py` first so `chroma_db` exists.)
+
+## Held-out check (10-document corpus)
+
+The corpus was extended from 5 to 10 documents (SQL, HTTP, bash scripting, pytest, networking) and 19 new questions were written (10 answerable, 9 unanswerable: 5 near-misses on the new topics, 4 off-topic). The default configuration was run once with no changes afterwards (threshold 0.95, lexical grounded check, no LLM verifier).
+
+| Metric | Result |
+|---|---|
+| Answerable answered | 10/10 |
+| Correct citation | 10/10 |
+| Correct abstention | 9/9 (5 near-misses, 4 off-topic) |
+| Total time | 538.8s (slowest, an abstention: 192.3s) |
+
+### Held-out caveats
+- The questions were drafted by an AI assistant that had already seen the earlier tuning results, so this is not a blind test.
+- 19 questions only: a perfect score bounds the failure rate rather than proving it is zero (rule of three: up to about 16% at 95% confidence).
+- Many answerable questions echo the wording of their document, which is easier than the tuning set (this set scored higher than the tuning set, which suggests easier questions rather than a better system). Only 5 near-miss questions.
+- The earlier tables in this README were measured on the original 5-document corpus; re-running them now uses the 10-document corpus and numbers may differ.
+- The near-miss abstentions were slow (20s to 192s), consistent with retries before giving up.

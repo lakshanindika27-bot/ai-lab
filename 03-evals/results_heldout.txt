@@ -1,0 +1,26 @@
+MAX_DISTANCE=0.95  k=3
+
+PASS 78.7s  How can I limit a query to the first few rows?
+PASS 9.5s  Which SQL clause filters rows?
+PASS 11.7s  What does HTTP status 404 mean?
+PASS 11.5s  Which HTTP method is used to send data to create something?
+PASS 11.1s  How do I make a shell script executable?
+PASS 9.7s  How do I run all my tests with pytest?
+PASS 10.5s  What is a pytest fixture for?
+PASS 12.0s  What does DNS do?
+PASS 12.4s  How can I check if a host is reachable?
+PASS 13.2s  How do I start a new git repository?
+PASS 192.3s  How do I insert a new row into a SQL table?
+PASS 40.6s  How do I write a parametrized test in pytest?
+PASS 19.7s  What does HTTP status 301 mean?
+PASS 60.2s  How do I use a while loop in a bash script?
+PASS 45.3s  How do I find my own IP address?
+PASS 0.1s  Who wrote the novel Pride and Prejudice?
+PASS 0.1s  How many players are on a football team?
+PASS 0.1s  How do I bake bread?
+PASS 0.1s  What is the boiling point of water?
+
+Answerable answered : 10/10
+Correct citation    : 10/10
+Correct abstention  : 9/9
+Total time          : 538.8s

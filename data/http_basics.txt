@@ -1,0 +1,1 @@
+HTTP is the protocol web clients and servers use to exchange messages. A GET request reads data and a POST request sends data to create something. Status code 200 means success, 404 means the resource was not found, and 500 means a server error. Headers carry metadata such as Content-Type.

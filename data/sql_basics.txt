@@ -1,0 +1,1 @@
+SQL queries data stored in tables. SELECT chooses columns, FROM names the table, and WHERE filters rows. Use ORDER BY to sort results and LIMIT to return only the first rows. JOIN combines rows from two tables that share a matching column.

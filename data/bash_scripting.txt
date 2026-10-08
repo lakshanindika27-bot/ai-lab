@@ -1,0 +1,1 @@
+A bash script is a text file of shell commands. Start it with the line #!/bin/bash and make it executable with chmod +x script.sh. Use $1 to read the first argument and a for loop to repeat commands. Run it with ./script.sh.

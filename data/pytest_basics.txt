@@ -1,0 +1,1 @@
+pytest finds test functions whose names start with test_. Run all tests with the command pytest. A failing assert shows the expected and actual values. A fixture, defined with the @pytest.fixture decorator, provides reusable setup for tests.

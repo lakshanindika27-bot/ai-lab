@@ -1,0 +1,21 @@
+[
+  {"q": "How can I limit a query to the first few rows?", "answerable": true, "source": "sql_basics.txt"},
+  {"q": "Which SQL clause filters rows?", "answerable": true, "source": "sql_basics.txt"},
+  {"q": "What does HTTP status 404 mean?", "answerable": true, "source": "http_basics.txt"},
+  {"q": "Which HTTP method is used to send data to create something?", "answerable": true, "source": "http_basics.txt"},
+  {"q": "How do I make a shell script executable?", "answerable": true, "source": "bash_scripting.txt"},
+  {"q": "How do I run all my tests with pytest?", "answerable": true, "source": "pytest_basics.txt"},
+  {"q": "What is a pytest fixture for?", "answerable": true, "source": "pytest_basics.txt"},
+  {"q": "What does DNS do?", "answerable": true, "source": "networking_basics.txt"},
+  {"q": "How can I check if a host is reachable?", "answerable": true, "source": "networking_basics.txt"},
+  {"q": "How do I start a new git repository?", "answerable": true, "source": "git_basics.txt"},
+  {"q": "How do I insert a new row into a SQL table?", "answerable": false, "source": null},
+  {"q": "How do I write a parametrized test in pytest?", "answerable": false, "source": null},
+  {"q": "What does HTTP status 301 mean?", "answerable": false, "source": null},
+  {"q": "How do I use a while loop in a bash script?", "answerable": false, "source": null},
+  {"q": "How do I find my own IP address?", "answerable": false, "source": null},
+  {"q": "Who wrote the novel Pride and Prejudice?", "answerable": false, "source": null},
+  {"q": "How many players are on a football team?", "answerable": false, "source": null},
+  {"q": "How do I bake bread?", "answerable": false, "source": null},
+  {"q": "What is the boiling point of water?", "answerable": false, "source": null}
+]

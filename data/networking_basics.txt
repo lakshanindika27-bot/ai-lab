@@ -1,0 +1,1 @@
+An IP address identifies a device on a network. DNS translates a domain name into an IP address. A port number selects which service on a machine receives the traffic, for example 443 for HTTPS. The ping command checks whether a host can be reached.
