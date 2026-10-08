@@ -8,6 +8,9 @@ A small RAG system built and evaluated locally (Ollama: `llama3.2:3b`, `nomic-em
 1. `01-rag/ingest.py`: sentence-window chunking (2 sentences, stride 1) -> embeddings -> ChromaDB
 2. `02-structured/ask_structured.py`: retrieve -> distance threshold -> LLM returns validated JSON (`answer`, `answerable`, `citations`, `evidence`) -> checks -> retry or abstain
 3. `03-evals/`: easy set (15 questions), hard set (10 questions; paraphrases and near-miss questions whose topic is in the docs but whose answer is not)
+4. `04-agents/`: tool-calling agent experiment over the same pipeline (compared with the fixed pipeline)
+5. `05-cost-cache/`: token and latency metering, retries with backoff, answer cache
+6. `06-serve/`: FastAPI server and Docker image; CI builds and boots the image
 
 ## Results (threshold 0.95)
 
