@@ -1,5 +1,7 @@
 # ai-lab: a measured, local RAG pipeline
 
+[![CI](https://github.com/lakshanindika27-bot/ai-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/lakshanindika27-bot/ai-lab/actions)
+
 A small RAG system built and evaluated locally (Ollama: `llama3.2:3b`, `nomic-embed-text`; ChromaDB). The goal was not a demo but a measured system: every design choice below was tested against an eval set.
 
 ## Pipeline
@@ -100,7 +102,7 @@ Smoke test, local server and container:
 ### Serving limitations
 - A known miss reproduces through the API: "How do I start a FastAPI server?" abstains (the lexical check rejects the answer) and costs 138s then 32s per request, because retries run and abstentions are not cached. There is no per-request time budget.
 - The cache lives inside the container and is lost when it stops; one worker, a synchronous endpoint, no authentication, no rate limiting.
-- Only a smoke test was run (no load test); the image was not run in CI.
+- Only a smoke test was run (no load test). CI (GitHub Actions) builds the image, boots the container and checks `/health` and input validation (HTTP 422), but it has no Ollama, so answers and evals are not tested in CI.
 
 Run it:
 
