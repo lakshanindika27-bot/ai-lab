@@ -1,6 +1,9 @@
 # ai-lab: a measured, local RAG pipeline
 
 [![CI](https://github.com/lakshanindika27-bot/ai-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/lakshanindika27-bot/ai-lab/actions)
+[![Security: 100% Local](https://img.shields.io/badge/Security-100%25%20Local-green)](SECURITY.md)
+[![Private Data](https://img.shields.io/badge/Data-Private-blue)](SECURITY.md)
+[![Dependabot](https://img.shields.io/badge/Dependabot-Enabled-success)](https://github.com/lakshanindika27-bot/ai-lab/network/dependencies)
 
 A small RAG system built and evaluated locally (Ollama: `llama3.2:3b`, `nomic-embed-text`; ChromaDB). The goal was not a demo but a measured system: every design choice below was tested against an eval set.
 
