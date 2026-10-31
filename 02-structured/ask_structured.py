@@ -9,6 +9,7 @@ LLM_MODEL = "llama3.2:3b"
 MAX_DISTANCE = 0.9      # provisional; tune with evals in 03
 MAX_RETRIES = 2
 import os
+RETRY_TEMPS = [float(t) for t in os.getenv("RETRY_TEMPS", "0,0,0").split(",")]
 VERIFY = os.getenv("VERIFY", "0") == "1"
 VERIFIER_MODEL = os.getenv("VERIFIER_MODEL", "")
 
@@ -95,12 +96,12 @@ Context:
 Question: {question}"""
 
     seen = set()
-    for _ in range(MAX_RETRIES + 1):
+    for attempt in range(MAX_RETRIES + 1):
         resp = ollama.chat(
             model=LLM_MODEL,
             messages=[{"role": "user", "content": prompt}],
             format=Answer.model_json_schema(),
-            options={"temperature": 0},
+            options={"temperature": RETRY_TEMPS[min(attempt, len(RETRY_TEMPS) - 1)]},
         )
         raw = resp["message"]["content"]
         if raw in seen:
