@@ -94,6 +94,7 @@ Context:
 
 Question: {question}"""
 
+    seen = set()
     for _ in range(MAX_RETRIES + 1):
         resp = ollama.chat(
             model=LLM_MODEL,
@@ -101,8 +102,12 @@ Question: {question}"""
             format=Answer.model_json_schema(),
             options={"temperature": 0},
         )
+        raw = resp["message"]["content"]
+        if raw in seen:
+            break  # identical reply: retrying cannot help
+        seen.add(raw)
         try:
-            result = Answer.model_validate_json(resp["message"]["content"])
+            result = Answer.model_validate_json(raw)
         except ValidationError:
             continue                           # retry
         if not set(result.citations) <= allowed:

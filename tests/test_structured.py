@@ -81,7 +81,7 @@ def test_hallucinated_citation_is_rejected(llm):
     bad = dict(GOOD, citations=["made_up.txt"])
     replies.append(json.dumps(bad))
     assert mod.ask("q") == mod.NO_ANSWER
-    assert calls["n"] == mod.MAX_RETRIES + 1
+    assert calls["n"] == 2  # identical reply on retry -> early exit
 
 
 def test_fake_evidence_is_rejected(llm):
@@ -104,7 +104,7 @@ def test_verifier_rejection_forces_retries(llm, monkeypatch):
     monkeypatch.setattr(mod, "VERIFY", True)
     monkeypatch.setattr(mod, "supports", lambda q, e, a: False)
     assert mod.ask("q") == mod.NO_ANSWER
-    assert calls["n"] == mod.MAX_RETRIES + 1
+    assert calls["n"] == 2  # identical reply on retry -> early exit
 
 
 @pytest.mark.parametrize(
@@ -117,3 +117,11 @@ def test_verifier_rejection_forces_retries(llm, monkeypatch):
 )
 def test_grounded(answer, evidence, expected):
     assert mod.grounded(answer, evidence) is expected
+
+
+def test_distinct_bad_replies_use_all_retries(llm):
+    replies, calls = llm
+    for i in range(mod.MAX_RETRIES + 1):
+        replies.append(json.dumps(dict(GOOD, citations=[f"made_up_{i}.txt"])))
+    assert mod.ask("q") == mod.NO_ANSWER
+    assert calls["n"] == mod.MAX_RETRIES + 1
