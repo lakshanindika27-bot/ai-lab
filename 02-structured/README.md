@@ -7,3 +7,7 @@
 - Stopping as soon as a reply repeats keeps the eval result unchanged
   (3/4 answered, 3/4 cited, 6/6 abstained, before and after) and cut total time from 241s to 162s.
 - Caveat: tiny sample, and run-to-run timing varies (an earlier run of the same code took 225s).
+- Retry temperatures `0,0.3,0.7` (via `RETRY_TEMPS`) produced more varied replies
+  (all-identical retries 7 -> 4) but still rescued 0 of 7 retried questions, and the eval
+  result did not change (3/4 answered, 3/4 cited, 6/6 abstained). Default stays `0,0,0`.
+  Same tiny sample; the run took longer (422s vs 162s), partly because early exit fires less often.
