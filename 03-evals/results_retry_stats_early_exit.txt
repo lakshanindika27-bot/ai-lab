@@ -1,6 +1,7 @@
 questions: 10
   1 LLM call(s): 3
-  2 LLM call(s): 7
+  2 LLM call(s): 5
+  3 LLM call(s): 2
 retried: 7
   retries that ended answerable: 0
   retried with a byte-identical reply: 7
