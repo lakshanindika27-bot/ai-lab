@@ -16,3 +16,16 @@
   check rejected them each time, so the final result was the correct abstention either way.
   The remaining retried question (image vs container, expected answerable) also got identical
   valid replies and was rejected by a later check; the script does not say which one.
+
+## Few-shot abstention examples (FEWSHOT=1)
+
+Two synthetic examples (one answerable, one abstain, unrelated topics) added to the prompt.
+The eval sets were not used to write them.
+
+| Set | Metric | FEWSHOT=0 | FEWSHOT=1 |
+|---|---|---|---|
+| hard (10) | answered / cited / abstained | 3/4, 3/4, 6/6 | 2/4, 2/4, 6/6 |
+| heldout (19) | answered / cited / abstained | 10/10, 10/10, 9/9 | 9/10, 9/10, 8/9 |
+
+No improvement: abstention did not rise and one answerable question more was missed on each set.
+Differences are one question each, so this is a direction, not proof. Default stays off.

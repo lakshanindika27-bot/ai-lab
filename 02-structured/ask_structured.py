@@ -10,6 +10,19 @@ MAX_DISTANCE = 0.9      # provisional; tune with evals in 03
 MAX_RETRIES = 2
 import os
 RETRY_TEMPS = [float(t) for t in os.getenv("RETRY_TEMPS", "0,0,0").split(",")]
+FEWSHOT = os.getenv("FEWSHOT", "0") == "1"
+FEWSHOT_TEXT = """
+Examples of the expected behaviour (unrelated topics):
+
+Context: [k8s.txt] kubectl get pods lists the pods in the current namespace.
+Question: How do I list pods?
+{"answer": "Run kubectl get pods", "answerable": true, "citations": ["k8s.txt"], "evidence": "kubectl get pods lists the pods in the current namespace."}
+
+Context: [k8s.txt] kubectl get pods lists the pods in the current namespace.
+Question: How do I back up a Postgres database?
+{"answer": "I do not know based on the documents.", "answerable": false, "citations": [], "evidence": ""}
+(The context mentions a related tool but never says how to do what was asked, so the answer is false.)
+"""
 VERIFY = os.getenv("VERIFY", "0") == "1"
 VERIFIER_MODEL = os.getenv("VERIFIER_MODEL", "")
 
@@ -90,6 +103,7 @@ Return JSON with:
 
 If no sentence in the context directly answers the question (related topics are NOT enough), set answerable to false and answer "I do not know based on the documents."
 
+{FEWSHOT_TEXT if FEWSHOT else ''}
 Context:
 {context}
 
