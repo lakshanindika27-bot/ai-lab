@@ -46,5 +46,5 @@ The rejected part really is unsupported by the quote.
 
 Without `grounded()`, 4 of 6 unanswerable questions got a confident answer with a real quote that does
 not answer the question. With it, those are caught, at the cost of rejecting a correct multi-part
-answer. Default stays on. (`results_hard.txt` was produced with GROUNDED=0.)
+answer. Default stays on. (The numbers match the older `results_hard.txt`, which was probably a GROUNDED=0 run.)
 Small sample: a direction, not proof.
