@@ -29,3 +29,22 @@ The eval sets were not used to write them.
 
 No improvement: abstention did not rise and one answerable question more was missed on each set.
 Differences are one question each, so this is a direction, not proof. Default stays off.
+
+## Diagnosis: why "image vs container" is rejected
+
+The reply passes schema, citation and evidence checks and fails `grounded()`.
+The answer makes two claims (what an image is, what a container is) while the evidence is one
+sentence about the container only, so under 70% of answer tokens appear in the quote.
+The rejected part really is unsupported by the quote.
+
+`GROUNDED` ablation on the hard set (10 questions):
+
+| | GROUNDED=1 (default) | GROUNDED=0 |
+|---|---|---|
+| answered / cited | 3/4, 3/4 | 4/4, 4/4 |
+| correct abstention | 6/6 | 2/6 |
+
+Without `grounded()`, 4 of 6 unanswerable questions got a confident answer with a real quote that does
+not answer the question. With it, those are caught, at the cost of rejecting a correct multi-part
+answer. Default stays on. (`results_hard.txt` was produced with GROUNDED=0.)
+Small sample: a direction, not proof.
