@@ -48,3 +48,15 @@ Without `grounded()`, 4 of 6 unanswerable questions got a confident answer with 
 not answer the question. With it, those are caught, at the cost of rejecting a correct multi-part
 answer. Default stays on. (The older `results_hard.txt` is a different run: MAX_DISTANCE=0.7, from the baseline threshold sweep. Its numbers happen to look similar, but it is not a GROUNDED=0 run.)
 Small sample: a direction, not proof.
+
+`GROUNDED` ablation on the heldout set (19 questions):
+
+| | GROUNDED=1 (default) | GROUNDED=0 |
+|---|---|---|
+| answered / cited | 10/10, 10/10 | 10/10, 10/10 |
+| correct abstention | 9/9 | 7/9 |
+| total time | 180s | 399s |
+
+Same direction as the hard set: without `grounded()`, 2 of 9 unanswerable questions got a confident
+answer. Here it cost no answerable question. Differences are 2 questions, so a direction, not proof.
+Timing differences were not investigated.
