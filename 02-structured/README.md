@@ -11,3 +11,8 @@
   (all-identical retries 7 -> 4) but still rescued 0 of 7 retried questions, and the eval
   result did not change (3/4 answered, 3/4 cited, 6/6 abstained). Default stays `0,0,0`.
   Same tiny sample; the run took longer (422s vs 162s), partly because early exit fires less often.
+- Why retries do not help: 6 of the 7 retried questions were unanswerable ones where the model
+  kept returning schema-valid replies with answerable=true and a real source name. The evidence
+  check rejected them each time, so the final result was the correct abstention either way.
+  The remaining retried question (image vs container, expected answerable) also got identical
+  valid replies and was rejected by a later check; the script does not say which one.
