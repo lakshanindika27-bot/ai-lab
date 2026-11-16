@@ -1,33 +1,86 @@
-name: CI
+name: Production RAG CI
 
 on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rag-ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  docker-smoke:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
-      - name: Build image
+  python-tests:
+    name: Python Automated Tests
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements-dev.txt
+
+      - name: Verify imports
+        run: |
+          python -c "import pytest, chromadb, fastapi, ollama, pydantic, tenacity, uvicorn; print('All imports successful')"
+
+      - name: Run automated tests
+        run: python -m pytest tests/ -v --tb=short
+
+  docker-smoke:
+    name: Docker Build and Smoke Tests
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
         run: docker build --build-arg PY=3.14 -t ai-lab-rag .
 
       - name: Start container
         run: docker run -d --name ai-lab-rag -p 8000:8000 ai-lab-rag
 
-      - name: Wait for /health
+      - name: Wait for health endpoint
         run: |
           for i in $(seq 1 30); do
-            if curl -sf localhost:8000/health; then echo; exit 0; fi
+            if curl -sf localhost:8000/health; then
+              echo
+              exit 0
+            fi
             sleep 2
           done
           exit 1
 
       - name: Check input validation
         run: |
-          code=$(curl -s -o /dev/null -w "%{http_code}" -X POST localhost:8000/ask -H 'Content-Type: application/json' -d '{"question":"x"}')
+          code=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X POST localhost:8000/ask \
+            -H 'Content-Type: application/json' \
+            -d '{"question":"x"}')
+
           echo "HTTP $code"
           test "$code" = "422"
 
