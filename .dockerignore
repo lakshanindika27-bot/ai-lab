@@ -5,3 +5,8 @@ __pycache__
 *.pyc
 .env
 05-cost-cache/cache.json
+
+# Test and backup artifacts
+.pytest_cache/
+*.bak
+*.bak.*

@@ -44,6 +44,12 @@ jobs:
         run: |
           python -c "import pytest, chromadb, fastapi, ollama, pydantic, tenacity, uvicorn; print('All imports successful')"
 
+      - name: Validate dataset quality
+        run: python scripts/validate_dataset.py
+
+      - name: Python compilation check
+        run: python -m compileall -q scripts tests 01-rag
+
       - name: Run automated tests
         run: python -m pytest tests/ -v --tb=short
 

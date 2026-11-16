@@ -8,3 +8,13 @@ chroma_db/
 # Editor backup files
 *.save
 *.save.*
+
+# Python test artifacts
+.pytest_cache/
+*.bak
+*.bak.*
+*.py[cod]
+
+# Coverage reports
+.coverage
+htmlcov/
