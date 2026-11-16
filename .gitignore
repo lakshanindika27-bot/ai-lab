@@ -18,3 +18,7 @@ chroma_db/
 # Coverage reports
 .coverage
 htmlcov/
+
+# Local database backups and security audit reports
+backups/
+security-audit.json
