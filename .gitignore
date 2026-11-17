@@ -22,3 +22,6 @@ htmlcov/
 # Local database backups and security audit reports
 backups/
 security-audit.json
+*.save
+*.save.*
+*.bak
