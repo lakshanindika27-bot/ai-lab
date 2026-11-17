@@ -3,9 +3,9 @@
 ## Why This RAG is Secure
 
 ✅ **No Cloud APIs** - Runs on Ollama llama3.2:3b locally
-✅ **No Data Leakage** - Your PDFs never leave your server
+✅ **No Data Leakage** - Documents are embedded and queried locally; nothing is sent to external APIs
 ✅ **Zero API Cost** - No OpenAI bills
-✅ **Private by Design** - ChromaDB local, data/ is gitignored
+✅ **Private by Design** - ChromaDB runs locally; the vector store (chroma_db/) and backups are gitignored
 
 ## Protected by GitHub Advanced Security
 
