@@ -40,6 +40,17 @@ jobs:
       - name: Install dependencies
         run: python -m pip install -r requirements-dev.txt
 
+      - name: Dependency vulnerability audit
+        run: |
+          # chromadb 1.5.9: no patched release exists (latest version).
+          # Embedded PersistentClient only; the affected server API is not used.
+          # See SECURITY.md "Known issues". Remove these ignores once a fix ships.
+          pip-audit -r requirements.txt \
+            --ignore-vuln PYSEC-2026-311 \
+            --ignore-vuln PYSEC-2026-3813 \
+            --ignore-vuln PYSEC-2026-3814 \
+            --ignore-vuln PYSEC-2026-3815
+
       - name: Verify imports
         run: |
           python -c "import pytest, chromadb, fastapi, ollama, pydantic, tenacity, uvicorn; print('All imports successful')"
