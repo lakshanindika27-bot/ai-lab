@@ -12,6 +12,24 @@ A small RAG system built and evaluated locally (Ollama: `llama3.2:3b`, `nomic-em
 - **Held-out set (10-document corpus):** 10/10 answered, 9/9 correctly refused. This is optimistic: the questions were drafted after seeing tuning results and the set is small (see *Held-out caveats*).
 - **Caching:** latency cut by about 86% (168.8s to 24.4s) and prompt tokens by about 76% on repeated questions.
 
+## Repository layout
+
+The numbered folders are the experiments in the order they were built; each step reuses code from the earlier ones.
+
+| Path | Purpose |
+|---|---|
+| `01-rag/` | Baseline: ingest documents into ChromaDB, plain retrieval + answer |
+| `02-structured/` | Structured (validated JSON) answers, distance threshold, grounded check, retry/abstain (`ask_structured.py` is the core module) |
+| `03-evals/` | Eval sets, eval runners, and saved `results_*.txt` |
+| `04-agents/` | Tool-calling agent experiment |
+| `05-cost-cache/` | Token metering and answer caching |
+| `06-serve/` | FastAPI server (`server.py`) |
+| `scripts/` | Dataset validation and ChromaDB helper scripts |
+| `tests/` | pytest suite (run in CI) |
+| `data/` | Source documents used for the knowledge base |
+
+The scripts add the earlier step folders to `sys.path` rather than being installed as a package, so run them from the repository root.
+
 ## Pipeline
 1. `01-rag/ingest.py`: sentence-window chunking (2 sentences, stride 1) -> embeddings -> ChromaDB
 2. `02-structured/ask_structured.py`: retrieve -> distance threshold -> LLM returns validated JSON (`answer`, `answerable`, `citations`, `evidence`) -> checks -> retry or abstain

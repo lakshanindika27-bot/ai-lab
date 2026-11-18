@@ -1,4 +1,4 @@
-ARG PY=3.12
+ARG PY=3.14
 FROM python:${PY}-slim
 WORKDIR /app
 COPY requirements-serve.txt .
