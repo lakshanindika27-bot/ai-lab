@@ -18,7 +18,7 @@ The numbered folders are the experiments in the order they were built; each step
 
 | Path | Purpose |
 |---|---|
-| `01-rag/` | Baseline: ingest documents into ChromaDB, plain retrieval + answer |
+| `01-rag/` | Baseline: sentence-window chunking, embeddings, and storage in ChromaDB (`ingest.py`), then plain retrieval + answer (`ask.py`) |
 | `02-structured/` | Structured (validated JSON) answers, distance threshold, grounded check, retry/abstain (`ask_structured.py` is the core module) |
 | `03-evals/` | Eval sets, eval runners, and saved `results_*.txt` |
 | `04-agents/` | Tool-calling agent experiment |
@@ -116,7 +116,7 @@ Pointing the client at an unreachable port fails after 3.0 seconds with a Connec
 
 ## Serving (06-serve)
 
-A FastAPI app (`06-serve/server.py`) exposes `GET /health` and `POST /ask` (validated input, structured JSON reply with `answerable`, `citations`, `evidence`, `cached`, `seconds`; HTTP 503 on backend errors). It is packaged as a Docker image (`Dockerfile`, minimal `requirements-serve.txt`). The container reaches Ollama on the host with `--network host` (Docker Engine inside WSL Ubuntu); documents and the vector store are mounted as volumes, so the image contains no data.
+A FastAPI app (`06-serve/server.py`) exposes `GET /health` and `POST /ask` (validated input, structured JSON reply with `answerable`, `citations`, `evidence`, `cached`, `seconds`; HTTP 503 on backend errors). It is packaged as a Docker image (`Dockerfile`, installing `requirements.txt`). The container reaches Ollama on the host with `--network host` (Docker Engine inside WSL Ubuntu); documents and the vector store are mounted as volumes, so the image contains no data.
 
 Smoke test, local server and container:
 
