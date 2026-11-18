@@ -7,7 +7,7 @@
 
 A small RAG system built and evaluated locally (Ollama: `llama3.2:3b`, `nomic-embed-text`; ChromaDB). The goal was not a demo but a measured system: every design choice below was tested against an eval set.
 
-**Headline results** (default config: 0.95 distance threshold + lexical grounded check, local `qwen2.5:7b` + `nomic-embed-text`, ChromaDB):
+**Headline results** (default config: 0.95 distance threshold + lexical grounded check, local `llama3.2:3b` + `nomic-embed-text`, ChromaDB):
 - **Tuning sets:** 9/10 easy and 3/4 hard questions answered with correct citations, and every out-of-scope question correctly refused (11/11).
 - **Held-out set (10-document corpus):** 10/10 answered, 9/9 correctly refused. This is optimistic: the questions were drafted after seeing tuning results and the set is small (see *Held-out caveats*).
 - **Caching:** latency cut by about 86% (168.8s to 24.4s) and prompt tokens by about 76% on repeated questions.
