@@ -25,3 +25,4 @@ security-audit.json
 *.save
 *.save.*
 *.bak
+dependency-audit.txt
