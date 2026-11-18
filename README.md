@@ -135,12 +135,6 @@ The corpus was extended from 5 to 10 documents (SQL, HTTP, bash scripting, pytes
 - Many answerable questions echo the wording of their document, which is easier than the tuning set (this set scored higher than the tuning set, which suggests easier questions rather than a better system). Only 5 near-miss questions.
 - The earlier tables in this README were measured on the original 5-document corpus; see the sensitivity check below for the 10-document corpus.
 - The near-miss abstentions were slow (20s to 192s), consistent with retries before giving up.
-### Held-out caveats
-- The questions were drafted by an AI assistant that had already seen the earlier tuning results, so this is not a blind test.
-- 19 questions only: a perfect score bounds the failure rate rather than proving it is zero (rule of three: up to about 16% at 95% confidence).
-- Many answerable questions echo the wording of their document, which is easier than the tuning set (this set scored higher than the tuning set, which suggests easier questions rather than a better system). Only 5 near-miss questions.
-- The earlier tables in this README were measured on the original 5-document corpus; see the sensitivity check below for the 10-document corpus.
-- The near-miss abstentions were slow (20s to 192s), consistent with retries before giving up.
 
 ### Sensitivity to corpus size
 The 25 tuning questions were re-run after the corpus grew from 5 to 10 documents (same configuration). Accuracy was unchanged on both sets; run time was higher but is noisy, so no cause is claimed. This is not a held-out result (the questions were used for tuning), and 10 short documents is still a small corpus.
